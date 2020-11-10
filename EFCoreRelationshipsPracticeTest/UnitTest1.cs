@@ -8,7 +8,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public void Test1()
         {
-
         }
     }
 }
