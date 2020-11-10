@@ -43,6 +43,7 @@ using (var scope = app.ApplicationServices.CreateScope())
 {
     using (var context = scope.ServiceProvider.GetService<CompanyDBContext>())
     {
+        context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
     }
 }
