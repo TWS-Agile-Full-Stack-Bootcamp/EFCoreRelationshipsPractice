@@ -32,15 +32,7 @@ to get
 * please input your repo url into field `answer`
 
 # hint
-```
-protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<...>()
-            .HasOne(...)
-            .WithOne(...)
-            ...
-    }
-```
+
 * add `Pomelo.EntityFrameworkCore.MySql` reference
 * use model
 * MySql Connection string: `server=localhost;user=root;database=db;password=*****;`
@@ -57,3 +49,13 @@ using (var scope = app.ApplicationServices.CreateScope())
 ```
 * create database context
 * inject database context then call its save & findAll in resource
+* 
+```
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<...>()
+            .HasOne(...)
+            .WithOne(...)
+            ...
+    }
+```
