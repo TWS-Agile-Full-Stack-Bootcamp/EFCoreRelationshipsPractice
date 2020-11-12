@@ -77,5 +77,18 @@ namespace EFCoreRelationshipsPractice.Controllers
             await this.companyDbContext.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = company.Id }, companyDto);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var foundCompany = await this.companyDbContext.Companies.FirstOrDefaultAsync(company => company.Id == id);
+            if (foundCompany != null)
+            {
+                this.companyDbContext.Remove(foundCompany);
+                await this.companyDbContext.SaveChangesAsync();
+            }
+
+            return this.NoContent();
+        }
     }
 }
