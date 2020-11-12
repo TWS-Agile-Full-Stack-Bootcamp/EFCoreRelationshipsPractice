@@ -33,7 +33,7 @@ namespace EFCoreRelationshipsPractice
             services.AddSwaggerGen();
             services.AddDbContext<CompanyDbContext>(options =>
             {
-                options.UseMySql("server=localhost;user=root;database=db;password=pass;");
+                options.UseMySql("server=10.211.55.2;user=root;database=db;password=pass;");
             });
         }
 
