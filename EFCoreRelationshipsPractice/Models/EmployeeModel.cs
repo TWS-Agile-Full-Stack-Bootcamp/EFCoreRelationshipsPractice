@@ -3,22 +3,22 @@ using EFCoreRelationshipsPractice.Dtos;
 
 namespace EFCoreRelationshipsPractice.Models
 {
-    [Table("Profile")]
-    public class ProfileModel
+    [Table("Employee")]
+    public class EmployeeModel
     {
-        public ProfileModel()
+        public EmployeeModel()
         {
         }
 
-        public ProfileModel(ProfileDto profile)
+        public EmployeeModel(EmployeeDto employee)
         {
-            RegisteredCapital = profile.RegisteredCapital;
-            CertId = profile.CertId;
+            Name = employee.Name;
+            Age = employee.Age;
         }
 
         public int Id { get; set; }
-        public int RegisteredCapital { get; set; }
-        public string CertId { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
 
         public CompanyModel Company { get; set; }
 

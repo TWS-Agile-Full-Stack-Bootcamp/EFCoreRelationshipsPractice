@@ -24,20 +24,12 @@ namespace EFCoreRelationshipsPractice.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompanyDto>>> List()
         {
-            var companyModels = await this.companyDbContext.Companies.Include(company => company.Profile).ToListAsync();
+            var companyModels = await this.companyDbContext.Companies
+                .Include(company => company.Profile)
+                .Include(company => company.Employees)
+                .ToListAsync();
 
-            var companyDtos = companyModels.Select(model =>
-            {
-                return new CompanyDto()
-                {
-                    Name = model.Name,
-                    Profile = new ProfileDto()
-                    {
-                        RegisteredCapital = model.Profile.RegisteredCapital,
-                        CertId = model.Profile.CertId,
-                    }
-                };
-            });
+            var companyDtos = companyModels.Select(model => new CompanyDto(model));
 
             return Ok(companyDtos);
         }
@@ -45,16 +37,11 @@ namespace EFCoreRelationshipsPractice.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CompanyDto>> GetById(int id)
         {
-            var companyModel = await this.companyDbContext.Companies.Include(company => company.Profile).FirstOrDefaultAsync(model => model.Id == id);
-            var companyDto = new CompanyDto()
-            {
-                Name = companyModel.Name,
-                Profile = new ProfileDto()
-                {
-                    RegisteredCapital = companyModel.Profile.RegisteredCapital,
-                    CertId = companyModel.Profile.CertId,
-                }
-            };
+            var companyModel = await this.companyDbContext.Companies
+                .Include(company => company.Profile)
+                .Include(company => company.Employees)
+                .FirstOrDefaultAsync(model => model.Id == id);
+            var companyDto = new CompanyDto(companyModel);
 
             return Ok(companyDto);
         }
@@ -62,16 +49,7 @@ namespace EFCoreRelationshipsPractice.Controllers
         [HttpPost]
         public async Task<ActionResult<CompanyDto>> Add(CompanyDto companyDto)
         {
-            ProfileModel profile = new ProfileModel()
-            {
-                RegisteredCapital = companyDto.Profile.RegisteredCapital,
-                CertId = companyDto.Profile.CertId,
-            };
-            CompanyModel company = new CompanyModel()
-            {
-                Name = companyDto.Name,
-                Profile = profile,
-            };
+            CompanyModel company = new CompanyModel(companyDto);
 
             await this.companyDbContext.Companies.AddAsync(company);
             await this.companyDbContext.SaveChangesAsync();
