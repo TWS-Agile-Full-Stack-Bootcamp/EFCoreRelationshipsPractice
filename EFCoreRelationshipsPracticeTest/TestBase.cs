@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
 using EFCoreRelationshipsPractice;
-using EFCoreRelationshipsPractice.Models;
-using EFCoreRelationshipsPractice.Repository;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace EFCoreRelationshipsPracticeTest
@@ -20,13 +16,13 @@ namespace EFCoreRelationshipsPracticeTest
 
         public void Dispose()
         {
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-            var context = scopedServices.GetRequiredService<CompanyDbContext>();
-
-            context.Companies.RemoveRange(context.Companies);
-
-            context.SaveChanges();
+            // var scope = Factory.Services.CreateScope();
+            // var scopedServices = scope.ServiceProvider;
+            // var context = scopedServices.GetRequiredService<CompanyDbContext>();
+            //
+            // context.Companies.RemoveRange(context.Companies);
+            //
+            // context.SaveChanges();
         }
 
         protected HttpClient GetClient()

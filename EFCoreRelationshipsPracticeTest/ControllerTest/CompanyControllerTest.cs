@@ -8,9 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using EFCoreRelationshipsPractice;
 using EFCoreRelationshipsPractice.Dtos;
-using EFCoreRelationshipsPractice.Models;
-using EFCoreRelationshipsPractice.Repository;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Xunit;
 
