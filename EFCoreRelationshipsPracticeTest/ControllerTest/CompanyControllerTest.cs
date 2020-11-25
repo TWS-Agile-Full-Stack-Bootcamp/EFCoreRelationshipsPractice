@@ -93,5 +93,39 @@ namespace EFCoreRelationshipsPracticeTest
 
             Assert.Equal(0, returnCompanies.Count);
         }
+
+        [Fact]
+        public async Task Should_create_many_companies_success()
+        {
+            var client = GetClient();
+            CompanyDto companyDto = new CompanyDto();
+            companyDto.Name = "IBM";
+            companyDto.Employees = new List<EmployeeDto>()
+            {
+                new EmployeeDto()
+                {
+                    Name = "Tom",
+                    Age = 19
+                }
+            };
+
+            companyDto.Profile = new ProfileDto()
+            {
+                RegisteredCapital = 100010,
+                CertId = "100",
+            };
+
+            var httpContent = JsonConvert.SerializeObject(companyDto);
+            StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+            await client.PostAsync("/companies", content);
+            await client.PostAsync("/companies", content);
+
+            var allCompaniesResponse = await client.GetAsync("/companies");
+            var body = await allCompaniesResponse.Content.ReadAsStringAsync();
+
+            var returnCompanies = JsonConvert.DeserializeObject<List<CompanyDto>>(body);
+
+            Assert.Equal(2, returnCompanies.Count);
+        }
     }
 }
