@@ -2,9 +2,9 @@ name: .NET Core
 
 on:
   push:
-    branches: [ chenxu-many-to-many ]
+    branches: [ master ]
   pull_request:
-    branches: [ chenxu-many-to-many ]
+    branches: [ master ]
 
 jobs:
   build:
