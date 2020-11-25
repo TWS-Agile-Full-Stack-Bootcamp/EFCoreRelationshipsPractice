@@ -58,19 +58,10 @@ namespace EFCoreRelationshipsPracticeTest
             Assert.Equal(companyDto.Employees[0].Name, returnCompanies[0].Employees[0].Name);
             Assert.Equal(companyDto.Profile.CertId, returnCompanies[0].Profile.CertId);
             Assert.Equal(companyDto.Profile.RegisteredCapital, returnCompanies[0].Profile.RegisteredCapital);
-
-            // var scope = Factory.Services.CreateScope();
-            // var scopedServices = scope.ServiceProvider;
-            // var context = scopedServices.GetRequiredService<CompanyDbContext>();
-            //
-            // await context.Companies.AddAsync(new CompanyModel());
-            // await context.SaveChangesAsync();
-            //
-            // var companies = context.Companies.ToList();
         }
 
         [Fact]
-        public async Task Should_delte_company_and_related_employee_and_profile_success()
+        public async Task Should_delete_company_and_related_employee_and_profile_success()
         {
             var client = GetClient();
             CompanyDto companyDto = new CompanyDto();
@@ -101,15 +92,6 @@ namespace EFCoreRelationshipsPracticeTest
             var returnCompanies = JsonConvert.DeserializeObject<List<CompanyDto>>(body);
 
             Assert.Equal(0, returnCompanies.Count);
-
-            // var scope = Factory.Services.CreateScope();
-            // var scopedServices = scope.ServiceProvider;
-            // var context = scopedServices.GetRequiredService<CompanyDbContext>();
-            //
-            // await context.Companies.AddAsync(new CompanyModel());
-            // await context.SaveChangesAsync();
-            //
-            // var companies = context.Companies.ToList();
         }
     }
 }
