@@ -1,7 +1,7 @@
 ﻿using EFCoreRelationshipsPractice.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EFCoreRelationshipsPractice
+namespace EFCoreRelationshipsPractice.Repository
 {
     public class CompanyDbContext : DbContext
     {

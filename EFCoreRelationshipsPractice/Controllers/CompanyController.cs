@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EFCoreRelationshipsPractice.Dtos;
 using EFCoreRelationshipsPractice.Models;
+using EFCoreRelationshipsPractice.Repository;
+using EFCoreRelationshipsPractice.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,22 +16,17 @@ namespace EFCoreRelationshipsPractice.Controllers
     [Route("companies")]
     public class CompanyController : ControllerBase
     {
-        private readonly CompanyDbContext companyDbContext;
+        private readonly CompanyService companyService;
 
-        public CompanyController(CompanyDbContext companyDbContext)
+        public CompanyController(CompanyService companyService)
         {
-            this.companyDbContext = companyDbContext;
+            this.companyService = companyService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompanyDto>>> List()
         {
-            var companyModels = await this.companyDbContext.Companies
-                .Include(company => company.Profile)
-                .Include(company => company.Employees)
-                .ToListAsync();
-
-            var companyDtos = companyModels.Select(model => new CompanyDto(model));
+            var companyDtos = await this.companyService.GetAll();
 
             return Ok(companyDtos);
         }
@@ -37,34 +34,22 @@ namespace EFCoreRelationshipsPractice.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CompanyDto>> GetById(int id)
         {
-            var companyModel = await this.companyDbContext.Companies
-                .Include(company => company.Profile)
-                .Include(company => company.Employees)
-                .FirstOrDefaultAsync(model => model.Id == id);
-            var companyDto = new CompanyDto(companyModel);
-
+            var companyDto = await this.companyService.GetById(id);
             return Ok(companyDto);
         }
 
         [HttpPost]
         public async Task<ActionResult<CompanyDto>> Add(CompanyDto companyDto)
         {
-            CompanyModel company = new CompanyModel(companyDto);
+            var id = await this.companyService.AddCompany(companyDto);
 
-            await this.companyDbContext.Companies.AddAsync(company);
-            await this.companyDbContext.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = company.Id }, companyDto);
+            return CreatedAtAction(nameof(GetById), new { id = id }, companyDto);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var foundCompany = await this.companyDbContext.Companies.FirstOrDefaultAsync(company => company.Id == id);
-            if (foundCompany != null)
-            {
-                this.companyDbContext.Remove(foundCompany);
-                await this.companyDbContext.SaveChangesAsync();
-            }
+            await companyService.DeleteCompany(id);
 
             return this.NoContent();
         }
